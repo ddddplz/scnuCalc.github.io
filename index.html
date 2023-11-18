@@ -12,6 +12,7 @@
     <!-- 引入 element 的组件库 -->
     <script src="./js/element.js"></script>
 
+
 </head>
 
 <body>
@@ -31,11 +32,12 @@
             <el-table-column prop="item" label="项目" width="180"></el-table-column>
             <el-table-column prop="data" label="数据" width="220">
                 <template slot-scope="scope">
-                    <el-input v-model="scope.row.data" type="Number" step="0.001" :value="-100" :placeholder=tips[scope.$index] />
+                    <el-input v-model="scope.row.data" type="Number" step="0.001" :value="-100"
+                        :placeholder=tips[scope.$index] />
                 </template>
             </el-table-column>
 
-            <el-table-column prop="score" label="得分" ></el-table-column>
+            <el-table-column prop="score" label="得分"></el-table-column>
         </el-table>
     </div>
 
@@ -147,8 +149,8 @@
                         return methods.sitAndReachGirlScore(sitAndReachData, this.grade);
                     }
                 }
-,
-                fiftyRunScore(){
+                ,
+                fiftyRunScore() {
                     const fiftyRunData = this.tableData[5].data;
                     if (this.gender == 'boy') {
                         return methods.fiftyRunBoyScore(fiftyRunData, this.grade);
@@ -199,23 +201,6 @@
 </body>
 
 <style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh; /* Set the height to the full viewport height */
-        margin: 0; /* Remove default body margin */
-    }
-    #app {
-        text-align: center; /* Align the content within the app container */
-    }
-    @media screen and (max-width: 600px) {
-    /* 在小屏幕上的样式调整 */
-    /* 例如，可以设置表格的宽度为100% */
-    #app {
-        width: 100%;
-    }
-}
 
 </style>
 
