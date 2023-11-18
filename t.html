@@ -1,11 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #app {
+            margin-left: 100px;
+            margin-top: 50px;
+        }
+    </style>
 </head>
+
 <body>
-    <input type="digit">
+    <div id="app">
+        <el-table :data="tableData" style="width: 60%" border height="240">
+            <el-table-column prop="date" label="日期" width="180" align="center">
+            </el-table-column>
+            <el-table-column prop="name" label="姓名" width="180" align="center">
+            </el-table-column>
+            <el-table-column prop="address" label="地址" align="center">
+            </el-table-column>
+        </el-table>
+        <!-- <el-table :data="tableData" style="width: 60%" border height="240" :header-cell-style="headClass" > -->
+        <el-table :data="tableData" style="width: 60%" border height="240" :cell-style="rowClass">
+            <el-table-column prop="date" label="日期" width="180">
+            </el-table-column>
+            <el-table-column prop="name" label="姓名" width="180">
+            </el-table-column>
+            <el-table-column prop="address" label="地址">
+            </el-table-column>
+        </el-table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                tableData: [{
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                }, {
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1517 弄'
+                }, {
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1519 弄'
+                }, {
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1516 弄'
+                }]
+            },
+            methods: {
+                headClass() { //表头居中显示
+                    return "text-align:center"
+                },
+                rowClass() { //表格数据居中显示
+                    return "text-align:center"
+                }
+            }
+        })
+    </script>
 </body>
+
 </html>

@@ -231,7 +231,7 @@ export default {
         var deltaScore;
         var lowestScore;
 
-        if (data >9) {
+        if (data > 9) {
             lowestScore = 10;
             deltaScore = 10;
             if (grade == 'lowGrade') {
@@ -242,7 +242,7 @@ export default {
             deltaData = 0.2;
 
         }
-        else if (data >7) {
+        else if (data > 7) {
             lowestScore = 60;
             deltaScore = 2;
             deltaData = 0.2;
@@ -261,19 +261,243 @@ export default {
         }
         return this.dataGetScore(-data, -lowestData, deltaData, lowestScore, deltaScore);
     },
+    fiftyRunGirlScore(data, grade) {
+        var lowestData;
+        var deltaData;
+        var deltaScore;
+        var lowestScore;
 
+        if (data > 10.2) {
+            lowestScore = 10;
+            deltaScore = 10;
+            if (grade == 'lowGrade') {
+                lowestData = 11.3;
+            } else {
+                lowestData = 11.2;
+            }
+            deltaData = 0.2;
 
-//-9.1 -10.1 0.2 10 10 
+        }
+        else if (data > 8.2) {
+            lowestScore = 60;
+            deltaScore = 2;
+            deltaData = 0.2;
+            lowestData = grade == 'lowGrade' ? 10.3 : 10.2;
+        }
+        else if (data > 7.6) {
+            lowestScore = 80;
+            deltaScore = 5;
+            deltaData = 0.3;
+            lowestData = grade == 'lowGrade' ? 8.3 : 8.2;
+        } else {
+            lowestScore = 90;
+            deltaScore = 5;
+            deltaData = 0.1;
+            lowestData = grade == 'lowGrade' ? 7.7 : 7.6;
+        }
+        return this.dataGetScore(-data, -lowestData, deltaData, lowestScore, deltaScore);
+    },
+    longRunBoyScore(data, grade) {
+        var lowestData;
+        var deltaData;
+        var deltaScore;
+        var lowestScore;
+
+        if (data > 270) {
+            lowestScore = 10;
+            deltaScore = 10;
+            if (grade == 'lowGrade') {
+                lowestData = 372;
+            } else {
+                lowestData = 370;
+            }
+            deltaData = 20;
+
+        }
+        else if (data > 220) {
+            lowestScore = 60;
+            deltaScore = 2;
+            deltaData = 5;
+            lowestData = grade == 'lowGrade' ? 272 : 270;
+        }
+        else if (data > 205) {
+            lowestScore = 80;
+            deltaScore = 5;
+            deltaData = 8;
+            lowestData = grade == 'lowGrade' ? 222 : 220;
+        } else {
+            lowestScore = 90;
+            deltaScore = 5;
+            deltaData = 5;
+            lowestData = grade == 'lowGrade' ? 207 : 205;
+        }
+        return this.dataGetScore(-data, -lowestData, deltaData, lowestScore, deltaScore);
+    },
+    longRunGirlScore(data, grade) {
+        var lowestData;
+        var deltaData;
+        var deltaScore;
+        var lowestScore;
+
+        if (data > 272) {
+            lowestScore = 10;
+            deltaScore = 10;
+            if (grade == 'lowGrade') {
+                lowestData = 324;
+            } else {
+                lowestData = 322;
+            }
+            deltaData = 10;
+
+        }
+        else if (data > 222) {
+            lowestScore = 60;
+            deltaScore = 2;
+            deltaData = 5;
+            lowestData = grade == 'lowGrade' ? 274 : 272;
+        }
+        else if (data > 208) {
+            lowestScore = 80;
+            deltaScore = 5;
+            deltaData = 7;
+            lowestData = grade == 'lowGrade' ? 224 : 222;
+        } else {
+            lowestScore = 90;
+            deltaScore = 5;
+            deltaData = 6;
+            lowestData = grade == 'lowGrade' ? 210 : 208;
+        }
+        return this.dataGetScore(-data, -lowestData, deltaData, lowestScore, deltaScore);
+    },
+    pullUpScore(data, grade) {
+        var lowestData;
+        var deltaData = 1;
+        var deltaScore;
+        var lowestScore;
+        var extraScore = 0;
+        var maxData;
+        if (data < 11) {
+            lowestScore = 10;
+            deltaScore = 10;
+            lowestData = grade == 'lowGrade' ? 5 : 6;
+        }
+        else if (data < 16) {
+            lowestScore = 60;
+            deltaScore = 4;
+            lowestData = grade == 'lowGrade' ? 10 : 11;
+        }
+        else if (data < 18) {
+            lowestScore = 80;
+            deltaScore = 5;
+            lowestData = grade == 'lowGrade' ? 15 : 16;
+        } else {
+            lowestScore = 90;
+            deltaScore = 5;
+            lowestData = grade == 'lowGrade' ? 17 : 18;
+
+            if (data > maxData) {            //额外加分
+                extraScore = data - maxData
+            }
+        }
+        return this.dataGetScore(data, lowestData, deltaData, lowestScore, deltaScore);
+    },
+    sitUpScore(data, grade) {
+        var lowestData;
+        var deltaData = 2;
+        var deltaScore;
+        var lowestScore;
+
+        if (data < 27) {
+            lowestScore = 10;
+            deltaScore = 10;
+            lowestData = grade == 'lowGrade' ? 16 : 17;
+        }
+        else if (data < 47) {
+            lowestScore = 60;
+            deltaScore = 2;
+            lowestData = grade == 'lowGrade' ? 26 : 27;
+        }
+        else if (data < 53) {
+            lowestScore = 80;
+            deltaScore = 5;
+            deltaData = 3;
+            lowestData = grade == 'lowGrade' ? 46 : 47;
+        } else {
+            lowestScore = 90;
+            deltaScore = 5;
+            lowestData = grade == 'lowGrade' ? 52 : 53;
+        }
+        return this.dataGetScore(data, lowestData, deltaData, lowestScore, deltaScore);
+    },
+
     dataGetScore(data, lowestData, deltaData, lowestScore, deltaScore) {
         if (data < lowestData) {
             return 0;
         }
         var dataTemp = data - lowestData + deltaData;
-        
+
         //+0.01 防止 1/3*3=0.9999999 
-        var result = parseInt(dataTemp / deltaData+0.01 - 1) * deltaScore + lowestScore;
+        var result = Math.floor(dataTemp / deltaData + 0.01 - 1) * deltaScore + lowestScore;
 
         return result > 100 ? 100 : result;
+    },
+    extraScore(pullOrSitUpData, longRunData, gender, grade) {
+        var maxData1;
+        var maxData2;
+        var result1;
+        var result2;
+        if (gender == 'boy') {
+            if (grade == 'lowGrade') {
+                maxData1 = 19;
+                maxData2 = 197;
+            } else {
+                maxData1 = 20;
+                maxData2 = 195;
+            }
+
+            result1 = pullOrSitUpData - maxData1;
+
+            result2 = maxData2 - longRunData;
+            if (result2 >= 4) {
+                if (result2 < 23) {
+                    result2 = Math.floor(result2 / 4);
+                } else {
+                    result2 = 5 + Math.floor((result2 - 20) / 3);
+                }
+            } else {
+                result2 = 0;
+            }
+        } else {                                   //女孩
+            if (grade == 'lowGrade') {
+                maxData1 = 56;
+                maxData2 = 198;
+            } else {
+                maxData1 = 57;
+                maxData2 = 196;
+            }
+
+            result1 = pullOrSitUpData - maxData1;
+            if (result1 >= 2) {
+                if (result1 < 7) {
+                    result1 = Math.floor(result1 / 2);
+                } else {
+                    result1 -= 3;
+                }
+            } else {
+                result1 = 0;
+            }
+
+            result2 = maxData2 - longRunData;
+            result2 = Math.floor(result2 / 5);
+        }
+        //保证在0-10以内
+        result1 = result1 > 10 ? 10 : result1;
+        result1 = result1 > 0 ? result1 : 0
+
+        result2 = result2 > 10 ? 10 : result2;
+        result2 = result2 > 0 ? result2 : 0
+        
+        return result1+result2;
     }
 
 }
