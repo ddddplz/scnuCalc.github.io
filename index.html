@@ -11,12 +11,14 @@
     <script src="./js/vue.js"></script>
     <!-- 引入 element 的组件库 -->
     <script src="./js/element.js"></script>
+
 </head>
 
 <body>
     <div id="app">
 
 
+        {{totalScore}} <br>
 
         <el-radio v-model="gender" label="boy">男</el-radio>
         <el-radio v-model="gender" label="girl">女</el-radio><br><br>
@@ -27,18 +29,18 @@
 
         <el-table :data="tableData" style="width: 100%">
             <el-table-column prop="item" label="项目" width="180"></el-table-column>
-            <el-table-column prop="data" label="数据">
+            <el-table-column prop="data" label="数据" width="220">
                 <template slot-scope="scope">
-                    <el-input v-model="scope.row.data" type="Number" />
+                    <el-input v-model="scope.row.data" type="Number" step="0.001" :value="-100" :placeholder=tips[scope.$index] />
                 </template>
             </el-table-column>
 
-            <el-table-column prop="score" label="得分">
-            </el-table-column>
+            <el-table-column prop="score" label="得分" ></el-table-column>
         </el-table>
     </div>
 
-    <script>
+    <script type="module">
+        import methods from './js/methods.js';
         new Vue({
             el: "#app",
             data() {
@@ -46,157 +48,167 @@
                     gender: '',
                     grade: '',
                     input: '',
+                    tips: [
+                        '请输入身高，单位cm',
+                        '请输入体重，单位kg',
+                        '请输入肺活量，单位mL',
+                        '请输入距离，单位cm',
+                        '请输入长度，单位cm',
+                        '请输入秒数',
+                        '请输入秒数',
+                        '请输入个数'
+                    ],
                     tableData: [
                         {
                             item: '身高/cm',
-                            data: '1',
-                            score: '0',
+                            data: '',
                         },
                         {
                             item: '体重/kg(15%)',
-                            data: '2',
+                            data: '',
                             score: '0',
                         },
                         {
                             item: '肺活量/mL(15%)',
-                            data: '3',
+                            data: '',
                             score: '0',
                         },
                         {
                             item: '立定跳远/cm(10%)',
-                            data: '4',
+                            data: '',
                             score: '0',
                         },
                         {
                             item: '坐位体前屈/cm(10%)',
-                            data: '5',
+                            data: undefined,
                             score: '0',
                         },
                         {
                             item: '50米/s(20%)',
-                            data: '5',
+                            data: '',
                             score: '0',
                         },
                         {
                             item: '1000米/s(20%)',
-                            data: '5',
+                            data: '',
                             score: '0',
                         },
                         {
-                            item: '引体向上/cm(10%)',
-                            data: '5',
+                            item: '引体向上/个(10%)',
+                            data: '',
                             score: '0',
                         },
                     ]
                 }
             },
             computed: {
+                totalScore() {
+                    var table = this.tableData;
+                    var result = 0;
+                    var score1 = parseFloat(table[1].score);
+                    var score2 = parseFloat(table[2].score);
+                    var score3 = parseFloat(table[3].score);
+                    var score4 = parseFloat(table[4].score);
+                    var score5 = parseFloat(table[5].score);
+                    var score6 = parseFloat(table[6].score);
+                    var score7 = parseFloat(table[7].score);
+
+                    result = (score1 + score2) * 0.15 +
+                        (score5 + score6) * 0.2 +
+                        (score3 + score4 + score7) * 0.1;
+
+                    return result.toFixed(2);
+                }
+                ,
+
                 lungScore() {
                     const lungData = this.tableData[2].data;
                     if (this.gender == 'boy') {
-                        return this.lungBoyScore(lungData);
+                        return methods.lungBoyScore(lungData, this.grade);
                     } else {
-                        return this.lungGirlScore(lungData);
+                        return methods.lungGirlScore(lungData, this.grade);
+                    }
+                },
+
+                jumpScore() {
+                    const jumpData = this.tableData[3].data;
+                    if (this.gender == 'boy') {
+                        return methods.jumpBoyScore(jumpData, this.grade);
+                    } else {
+                        return methods.jumpGirlScore(jumpData, this.grade);
+                    }
+                },
+
+                sitAndReachScore() {
+                    const sitAndReachData = this.tableData[4].data;
+                    if (this.gender == 'boy') {
+                        return methods.sitAndReachBoyScore(sitAndReachData, this.grade);
+                    } else {
+                        return methods.sitAndReachGirlScore(sitAndReachData, this.grade);
                     }
                 }
-            },
-            watch: {
-                lungScore() {
-                    this.tableData[2].score = this.lungScore;
+,
+                fiftyRunScore(){
+                    const fiftyRunData = this.tableData[5].data;
+                    if (this.gender == 'boy') {
+                        return methods.fiftyRunBoyScore(fiftyRunData, this.grade);
+                    } else {
+                        return methods.sitAndReachGirlScore(fiftyRunData, this.grade);
+                    }
                 }
 
+            },
+            watch: {
+
+                lungScore() {
+                    this.tableData[2].score = this.lungScore;
+                },
+                jumpScore() {
+                    this.tableData[3].score = this.jumpScore;
+                },
+                sitAndReachScore() {
+                    this.tableData[4].score = this.sitAndReachScore;
+                    if (isNaN(this.tableData[4].score)) {
+                        this.tableData[4].score = 0;
+                    }
+                },
+                fiftyRunScore() {
+                    this.tableData[5].score = this.fiftyRunScore;
+                },
+                gender() {
+                    var meter, item;
+                    if (this.gender == 'boy') {
+                        meter = '1000';
+                        item = '引体向上';
+                    } else {
+                        meter = '800';
+                        item = '仰卧起坐';
+                    }
+                    this.tableData[6].item = meter + '米/s(20%)';
+                    this.tableData[7].item = item + '/个(10%)';
+                }
 
             },
             methods: {
-                lungBoyScore(lung) {  //返回男生肺活量分数
-                    var t1, t2;
-                    var lowestLung;
-                    var deltaLung;
-                    var deltaScore;
-                    var lowestScore;
-                    if (lung < 3200) {
-                        lowestScore = 10;
-                        deltaScore = 10;
-                        if (this.grade == 'lowGrade') {
-                            lowestLung = 2300;
-                            deltaLung = 160;
-                        } else {
-                            lowestLung = 2350;
-                            deltaLung = 170;
-                        }
-
-                    }
-                    else if (lung < 4400) {
-                        lowestScore = 60;
-                        deltaScore = 2;
-                        deltaLung = 120;
-                        lowestLung = this.grade == 'lowGrade' ? 3100 : 3200;
-                    }
-                    else if (lung < 4900) {
-                        lowestScore = 80;
-                        deltaScore = 5;
-                        deltaLung = 250;
-                        lowestLung = this.grade == 'lowGrade' ? 4300 : 4400;
-                    } else {
-                        lowestScore = 90;
-                        deltaScore = 5;
-                        deltaLung = 120;
-                        lowestLung = this.grade == 'lowGrade' ? 4800 : 4900;
-                    }
-                    return this.lungGetScore(lung, lowestLung, deltaLung, lowestScore, deltaScore);
-
-
-                },
-                lungGirlScore(lung){
-                    var lowestLung;
-                    var deltaLung;
-                    var deltaScore;
-                    var lowestScore;
-                    if (lung < 2050) {
-                        lowestScore = 10;
-                        deltaScore = 10;
-                        if (this.grade == 'lowGrade') {
-                            lowestLung = 1800;
-                        } else {
-                            lowestLung = 1850;
-                        }
-                        deltaLung = 40;
-
-                    }
-                    else if (lung < 3050) {
-                        lowestScore = 60;
-                        deltaScore = 2;
-                        deltaLung = 100;
-                        lowestLung = this.grade == 'lowGrade' ? 2000 : 2050;
-                    }
-                    else if (lung < 3350) {
-                        lowestScore = 80;
-                        deltaScore = 5;
-                        deltaLung = 150;
-                        lowestLung = this.grade == 'lowGrade' ? 3000 : 3050;
-                    } else {
-                        lowestScore = 90;
-                        deltaScore = 5;
-                        deltaLung = 50;
-                        lowestLung = this.grade == 'lowGrade' ? 3300 : 3350;
-                    }
-                    return this.lungGetScore(lung, lowestLung, deltaLung, lowestScore, deltaScore);
-                },
-                lungGetScore(lung, lowestLung, deltaLung, lowestScore, deltaScore) {
-                    if (lung < lowestLung) {
-                        return 0;
-                    }
-                    var lungTemp = lung - lowestLung + deltaLung;
-                    var result=parseInt(lungTemp / deltaLung - 1) * deltaScore + lowestScore;
-                    if(result>100){
-                        return 100;
-                    }
-                    return result;
-                }
+                ...methods
             }
+
         })
     </script>
 
 </body>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Set the height to the full viewport height */
+        margin: 0; /* Remove default body margin */
+    }
+    #app {
+        text-align: center; /* Align the content within the app container */
+    }
+</style>
 
 </html>
