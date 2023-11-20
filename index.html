@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>scnu体测成绩计算器</title>
     <script type="module" src="./js/main.js"></script>
-    <link rel="stylesheet" href="./css/index.css">
     <!-- 引入 element-ui 的样式 -->
     <link rel="stylesheet" href="./css/element.css">
     <!-- 必须先引入 vue，  后使用 element-ui -->
@@ -19,6 +18,8 @@
     <!-- 悄悄统计页面访问次数嘿嘿 -->
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
+    有错误欢迎关注公众号ddddzyjplz留言<br>
+    加载不出来的情况是因为某种看不见的力量，审核通过后将迁移至gitee。。。
     <div id="app">
         <div id="topItem">
             <div id=totalScore>
@@ -27,11 +28,16 @@
             <div id="extraScore">
                 + {{extraScores}} 分<br>
             </div>
-            <el-radio v-model="gender" label="boy">男</el-radio>
-            <el-radio v-model="gender" label="girl">女</el-radio><br>
 
-            <el-radio v-model="grade" label="lowGrade">大一/大二</el-radio>
-            <el-radio v-model="grade" label="highGrade">大三/大四</el-radio>
+            <el-radio-group v-model="gender" @change="savedData">
+                <el-radio label="boy">男</el-radio>
+                <el-radio label="girl">女</el-radio>
+            </el-radio-group><br>
+
+            <el-radio-group v-model="grade" @change="savedData">
+                <el-radio label="lowGrade">大一/大二</el-radio>
+                <el-radio label="highGrade">大三/大四</el-radio>
+            </el-radio-group>
         </div>
 
         <el-table :data="tableData" style=" width: 100%;margin: auto">
@@ -47,7 +53,6 @@
             <el-table-column prop="score" label="得分" min-width="15%"></el-table-column>
         </el-table>
     </div>
-
 </body>
 <style>
     #topItem {

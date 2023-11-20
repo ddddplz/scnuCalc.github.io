@@ -1,6 +1,6 @@
 import methods from './methods.js';
 
-
+const savedData = localStorage.getItem('scnuData');
 new Vue({
     el: "#app",
     data() {
@@ -22,43 +22,43 @@ new Vue({
                 {
                     item: '身高/cm',
                     data: '',
-                    step:0.001
+                    step: 0.001
                 },
                 {
                     item: '体重/kg(15%)',
                     data: '',
                     score: '0',
-                    step:0.001,
+                    step: 0.001,
                 },
                 {
                     item: '肺活量/mL(15%)',
                     data: '',
                     score: '0',
-                    step:1,
+                    step: 1,
                 },
                 {
                     item: '立定跳远/cm(10%)',
                     data: '',
                     score: '0',
-                    step:1,
+                    step: 1,
                 },
                 {
                     item: '坐位体前屈/cm(10%)',
                     data: undefined,
                     score: '0',
-                    step:0.1,
+                    step: 0.1,
                 },
                 {
                     item: '50米/s(20%)',
                     data: undefined,
                     score: '0',
-                    step:0.001,
+                    step: 0.001,
                 },
                 {
                     item: '1000米/s(20%)',
                     data: undefined,
                     score: '0',
-                    step:0.01,
+                    step: 0.01,
                 },
                 {
                     item: '引体向上/个(10%)',
@@ -67,6 +67,12 @@ new Vue({
                     step: 1,
                 },
             ]
+        }
+    },
+    created() {
+        if (savedData) {
+            const parsedData = JSON.parse(savedData);
+            Object.assign(this, parsedData);
         }
     },
     computed: {
@@ -95,12 +101,12 @@ new Vue({
         },
 
         bmiScores() {
-            const height = this.tableData[0].data/100;
+            const height = this.tableData[0].data / 100;
             const weight = this.tableData[1].data;
-          
-            if (height!=''&&height!=undefined&&weight!=''&&weight!=undefined) {
+
+            if (height != '' && height != undefined && weight != '' && weight != undefined) {
                 return methods.bmiScore(height, weight, this.gender);
-            } 
+            }
             return 0;
         },
         lungScore() {
@@ -113,7 +119,7 @@ new Vue({
         },
 
         jumpScore() {
-            
+
             const jumpData = Math.floor(this.tableData[3].data);
             if (this.gender == 'boy') {
                 return methods.jumpBoyScore(jumpData, this.grade);
@@ -223,7 +229,19 @@ new Vue({
                 // 如果为空，则将输入框的值设置为默认值
                 this.$set(row, 'data', undefined);
             }
+            this.savedData();
         },
+        savedData() {
+            const dataToSave = {
+                gender: this.gender,
+                grade: this.grade,
+                tableData: this.tableData,
+            };
+            localStorage.setItem('scnuData', JSON.stringify(dataToSave));
+        }, 
     }
-
 })
+
+
+
+
