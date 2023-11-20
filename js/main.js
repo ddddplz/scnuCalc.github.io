@@ -55,7 +55,7 @@ new Vue({
                     step: 0.001,
                 },
                 {
-                    item: '1000米/s(20%)',
+                    item: '1000米/min.s(20%)',
                     data: undefined,
                     score: '0',
                     step: 0.01,
