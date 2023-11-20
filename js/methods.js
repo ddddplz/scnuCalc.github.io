@@ -303,7 +303,7 @@ export default {
         var deltaScore;
         var lowestScore;
 
-        if (data > 270) {
+        if (data > 272) {
             lowestScore = 10;
             deltaScore = 10;
             if (grade == 'lowGrade') {
@@ -314,13 +314,13 @@ export default {
             deltaData = 20;
 
         }
-        else if (data > 220) {
+        else if (data > 222) {
             lowestScore = 60;
             deltaScore = 2;
             deltaData = 5;
             lowestData = grade == 'lowGrade' ? 272 : 270;
         }
-        else if (data > 205) {
+        else if (data > 209) {
             lowestScore = 80;
             deltaScore = 5;
             deltaData = 8;
@@ -339,7 +339,7 @@ export default {
         var deltaScore;
         var lowestScore;
 
-        if (data > 272) {
+        if (data > 274) {
             lowestScore = 10;
             deltaScore = 10;
             if (grade == 'lowGrade') {
@@ -350,13 +350,13 @@ export default {
             deltaData = 10;
 
         }
-        else if (data > 222) {
+        else if (data > 224) {
             lowestScore = 60;
             deltaScore = 2;
             deltaData = 5;
             lowestData = grade == 'lowGrade' ? 274 : 272;
         }
-        else if (data > 208) {
+        else if (data > 210) {
             lowestScore = 80;
             deltaScore = 5;
             deltaData = 7;
@@ -430,15 +430,39 @@ export default {
         return this.dataGetScore(data, lowestData, deltaData, lowestScore, deltaScore);
     },
 
+    bmiScore(height, weight, gender) {
+        var t1 = 17.1, t2 = 23.9, t3 = 27.9;
+        var score;
+        if (gender = 'boy') {
+            t1 = 17.8;
+            t2 = 23.9;
+            t3 = 27.9;
+        }
+
+        var bmi = weight / (height * height);
+        bmi = Math.round(bmi * 10) / 10;  //四舍五入保留1位小数
+
+        if (bmi <= t1) {
+            score = 80;
+        } else if (bmi <= t2) {
+            score = 100;
+        } else if (bmi <= t3) {
+            score = 80;
+        } else {
+            score = 60;
+        }
+        return score;
+
+    },
+   
     dataGetScore(data, lowestData, deltaData, lowestScore, deltaScore) {
         if (data < lowestData) {
             return 0;
         }
         var dataTemp = data - lowestData + deltaData;
 
-        //+0.01 防止 1/3*3=0.9999999 
-        var result = Math.floor(dataTemp / deltaData + 0.01 - 1) * deltaScore + lowestScore;
-
+        //+0.001 防止 1/3*3=0.9999999 
+        var result = Math.floor(dataTemp / deltaData + 0.001 - 1) * deltaScore + lowestScore;
         return result > 100 ? 100 : result;
     },
     extraScore(pullOrSitUpData, longRunData, gender, grade) {
@@ -496,8 +520,9 @@ export default {
 
         result2 = result2 > 10 ? 10 : result2;
         result2 = result2 > 0 ? result2 : 0
-        
-        return result1+result2;
+
+        return result1 + result2;
     }
+
 
 }
