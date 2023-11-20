@@ -433,7 +433,7 @@ export default {
     bmiScore(height, weight, gender) {
         var t1 = 17.1, t2 = 23.9, t3 = 27.9;
         var score;
-        if (gender = 'boy') {
+        if (gender == 'boy') {
             t1 = 17.8;
             t2 = 23.9;
             t3 = 27.9;
